@@ -8,10 +8,6 @@ I’m no color scientist - if color science is an iceberg, I probably only know 
 
 Tonal OKLCh is HCT but with OKLCh. Material's HCT combines CAM 16’s hue and chroma with CIE L*, but CAM 16 still has the blue-purple hue shift issue similar to Lab, which OKLCh set out to solve, so I thought, what about piecing together the hue & chroma from OKLCh and CIE L* to achieve a better result? From there, tonal OKLCh was born.
 
-### I used “Tonal OKLCh” because
-
-Tonal OKLCh is a bit long, especially as a function name, and I thought about naming it OKTCh, but ultimately, it didn’t feel like I created a new color space. The real hard work was done by the people who created OKLCh and HCT, so I wanted to pay tribute to them by preserving the two color spaces’ names that make up Tonal OKLCh.
-
 ## Why not just OKLCh?
 
 When I was designing the color system for our team, I noticed OKLCh’s non-uniform lightness issue, which had two main consequences:
@@ -21,7 +17,11 @@ When I was designing the color system for our team, I noticed OKLCh’s non-unif
 
 ### Compressed dark end
 
-As you can see from the graph below, in increments of 2, the dark end of the ramp is barely distinguishable till the lightness value is above x. The practical implication is, in light mode, if I set the page background color to L=100 and the layer color to L=98, I couldn’t maintain the same distance in dark mode by choosing L=10 and L=12, because those two colors would be too close together.
+As you can see from the graph below, in increments of 2, the dark end of the ramp is barely distinguishable till the lightness value is above 18.
+
+<oklch-grayscale-ramp />
+
+The practical implication is, in light mode, if I set the page background color to L=100 and the layer color to L=98, I couldn’t maintain the same distance in dark mode by choosing L=10 and L=12, because those two colors would be too close together.
 
 ### Inconsistent contrast ratio
 
@@ -67,5 +67,7 @@ In a prior deep research report, Claude suggested that I try the following:
 These 3 approaches still yield different contrasts. From there, I had the peace of mind to finally implement my own.
 
 ## Postface
+
+Tonal OKLCh is a bit long, especially as a function name, and I thought about naming it OKTCh, but ultimately, it didn’t feel like I created a new color space. The real hard work was done by the people who created OKLCh and HCT, so I wanted to pay tribute to them by preserving the two color spaces’ names that make up Tonal OKLCh.
 
 If you have any feedback or requests, please don’t hesitate to let me know in this project’s GitHub repo.

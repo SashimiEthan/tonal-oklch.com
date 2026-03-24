@@ -1,10 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
+import { Geist_Mono } from "next/font/google";
+import { Retune } from "retune";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const soehne = localFont({
+  src: "../fonts/soehne-buch.woff2",
+  weight: "400",
+  variable: "--font-soehne",
+});
+
+const soehneBreit = localFont({
+  src: [
+    { path: "../fonts/soehne-breit-halbfett.woff2", weight: "600" },
+    { path: "../fonts/soehne-breit-dreiviertelfett.woff2", weight: "700" },
+  ],
+  variable: "--font-soehne-breit",
 });
 
 const geistMono = Geist_Mono({
@@ -23,11 +34,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en" className={`${soehne.variable} ${soehneBreit.variable} ${geistMono.variable}`}>
+      <body>
+        {children}
+        <Retune />
+      </body>
     </html>
   );
 }
