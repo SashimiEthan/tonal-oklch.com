@@ -6,7 +6,7 @@ I’m no color scientist - if color science is an iceberg, I probably only know 
 
 ## What is Tonal OKLCh?
 
-Tonal OKLCh is HCT but with OKLCh. Material's HCT combines CAM 16’s hue and chroma with CIE L*, but CAM 16 still has the blue-purple hue shift issue similar to Lab, which OKLCh set out to solve, so I thought, what about piecing together the hue & chroma from OKLCh and CIE L* to achieve a better result? From there, tonal OKLCh was born.
+Tonal OKLCh is HCT but with OKLCh. Material's HCT combines CAM 16’s hue and chroma with CIE L*, which has better lightness uniformity than OKLCh. But CAM 16 still has the blue-purple hue shift issue similar to Lab, which OKLCh set out to solve. So I thought, what about piecing together the hue & chroma from OKLCh and CIE L* to achieve a better result? From there, tonal OKLCh was born.
 
 ## Why not just OKLCh?
 
@@ -23,13 +23,15 @@ As you can see from the graph below, in increments of 2, the dark end of the ram
 
 The practical implication is, in light mode, if I set the page background color to L=100 and the layer color to L=98, I couldn’t maintain the same distance in dark mode by choosing L=10 and L=12, because those two colors would be too close together.
 
+(I had compensated for this problem with a conversion table between OKLCh L and LCh L, where for example when I say grey 10, it’s actually LCh 10, and it converts to 22 in OKLCh. <- And this is the actual L value I’m using to generate the color. I always thought it was less elegant and it didn’t resolve the issue below, so I wanted to find a better solution.)
+
 ### Inconsistent contrast ratio
 
-For the same reason, setting L to the same value doesn't always give you the same contrast ratio (under both the current and future standards), which slightly defeats the purpose of using a perceptually uniform color space.
+For the same reason, setting L to the same value doesn't always give you the same contrast ratio (under both the current and future standards), which diminishes the purpose of using a perceptually uniform color space.
+
+<oklch-hue-ramp />
 
 Why don’t you just decrease the L until all colors meet contrast? Good question. As lightness decreases, max chroma also decreases—and chroma controls how vibrant a color looks. As you can see in the second example below, at L=51, all colors finally pass contrast, but even with chroma set to the same 0.2, the colors in this stop appear darker and less vibrant.
-
-(I had compensated for the first problem with a conversion table between OKLCh L and LCh L, where for example when I say grey 10, it’s actually LCh 10, and it converts to 22 in OKLCh. <- And this is the actual L value I’m using to generate the color. I always thought it was less elegant and it didn’t resolve the second issue, so I wanted to find a better solution.)
 
 ## Why not just HCT?
 

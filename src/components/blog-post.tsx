@@ -4,9 +4,11 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { Root, Element, RootContent } from "hast";
 import { OklchGrayscaleRamp } from "./graphs/oklch-grayscale-ramp";
+import { OklchHueRamp } from "./graphs/oklch-hue-ramp";
 
 const graphComponents: Record<string, React.ComponentType> = {
   "oklch-grayscale-ramp": OklchGrayscaleRamp,
+  "oklch-hue-ramp": OklchHueRamp,
 };
 
 // Finds raw HTML nodes like <oklch-grayscale-ramp /> and converts them
