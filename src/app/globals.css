@@ -33,7 +33,7 @@ article * {
     margin: 0;
     text-box-edge: cap alphabetic;
     text-box-trim: trim-both;
-    font-family: var(--font-soehne), sans-serif;
+    font-family: var(--font-inter), sans-serif;
     font-size: 18px;
     line-height: 150%;
 }
@@ -63,7 +63,7 @@ section > h2 + * {
 }
 
 h1 {
-    font-family: var(--font-soehne-breit), sans-serif;
+    font-family: var(--font-inter), sans-serif;
     font-weight: 700;
     text-align: center;
 }
@@ -73,7 +73,7 @@ h1 {
 }
 
 h2, h3 {
-    font-family: var(--font-soehne-breit), sans-serif;
+    font-family: var(--font-inter), sans-serif;
     font-weight: 600;
 }
 
