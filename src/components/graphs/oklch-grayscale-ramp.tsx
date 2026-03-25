@@ -5,7 +5,7 @@ export function OklchGrayscaleRamp() {
 
   return (
     <figure>
-      <div style={{ display: "flex", width: "100%", borderRadius: 4, overflow: "hidden" }}>
+      <div style={{ display: "flex", width: "100%", borderRadius: 2, overflow: "hidden" }}>
         {steps.map((lightness) => (
           <div
             key={lightness}
