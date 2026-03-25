@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { chromaVsHue } from "@/lib/gamut";
 
-const PADDING = { top: 16, right: 16, bottom: 16, left: 48 };
+const PADDING = { top: 5, right: 0, bottom: 4, left: 29 };
 const MAX_CHROMA = 0.4;
 
 function MaxChromaSvg({ lightness, chromaLine }: { lightness: number; chromaLine?: number }) {
@@ -75,7 +75,7 @@ function MaxChromaSvg({ lightness, chromaLine }: { lightness: number; chromaLine
             y={y(c) + 4}
             textAnchor="end"
             style={{
-              fontSize: 7,
+              fontSize: 12,
               fontFamily: "var(--font-geist-mono)",
               fill: "var(--foreground-primary)",
             }}
@@ -122,7 +122,7 @@ export function OklchMaxChromaCompare() {
   return (
     <figure>
       {/* SVG row with spanning line */}
-      <div style={{ display: "flex", gap: 16, position: "relative" }}>
+      <div style={{ display: "flex", gap: 32, position: "relative" }}>
         <div style={{ flex: "1 1 0", minWidth: 0 }}>
           <svg viewBox="0 0 800 300" style={{ width: "100%", height: "auto", display: "block" }}>
             <MaxChromaSvgInner lightness={0.5878} />
@@ -141,7 +141,7 @@ export function OklchMaxChromaCompare() {
             right: 0,
             height: 1,
             backgroundColor: "black",
-            opacity: 0.4,
+            opacity: 0.25,
             pointerEvents: "none",
           }}
         />
@@ -206,7 +206,7 @@ function MaxChromaSvgInner({ lightness }: { lightness: number }) {
         y1={PADDING.top}
         x2={PADDING.left}
         y2={PADDING.top + plotH}
-        stroke="#999"
+        stroke="#BFBFBF"
         strokeWidth={1}
       />
       {chromaLabels.map((c) => (
@@ -216,7 +216,7 @@ function MaxChromaSvgInner({ lightness }: { lightness: number }) {
           y={y(c) + 4}
           textAnchor="end"
           style={{
-            fontSize: 7,
+            fontSize: 12,
             fontFamily: "var(--font-geist-mono)",
             fill: "var(--foreground-primary)",
           }}

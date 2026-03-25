@@ -31,10 +31,14 @@ For the same reason, setting L to the same value doesn't always give you the sam
 
 <oklch-hue-ramp />
 
-Why don’t you just decrease the L until all colors meet contrast? Good question. As lightness decreases, max chroma also decreases—and chroma controls how vibrant a color looks. As you can see in the example below, at L=53, all colors finally pass contrast, but even with chroma set to the same 0.2, the colors in this stop appear darker and less vibrant.
-
+Why don’t you just decrease the L until all colors meet contrast? Good question. As lightness decreases, max chroma also decreases—and chroma controls how vibrant a color looks. At L=53, all colors finally pass contrast, but as you can see from the graph below, at C=0.15, there are less colors that can achieve this vibrancy.
 
 <oklch-max-chroma-compare />
+
+In practice, the colors in this stop appear darker and less vibrant.
+
+<oklch-hue-ramp />
+
 
 ## Why not just HCT?
 
