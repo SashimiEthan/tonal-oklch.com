@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { Inter, Geist_Mono, Geist } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 import { Retune } from "retune";
 import { tonalOklchToResult } from "tonal-oklch";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const inter = Inter({
   variable: "--font-inter",
@@ -32,7 +30,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn(inter.variable, geistMono.variable, "font-sans", geist.variable)}
+      className={cn(inter.variable, geistMono.variable)}
       style={{ "--foreground-primary": foregroundPrimary } as React.CSSProperties}
     >
       <body>

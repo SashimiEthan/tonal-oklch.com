@@ -5,10 +5,16 @@ import remarkGfm from "remark-gfm";
 import type { Root, Element, RootContent } from "hast";
 import { OklchGrayscaleRamp } from "./graphs/oklch-grayscale-ramp";
 import { OklchHueRamp } from "./graphs/oklch-hue-ramp";
+import { HctBluePalette } from "./graphs/hct-blue-palette";
+import { OklchMaxChroma, OklchMaxChromaCompare } from "./graphs/oklch-max-chroma";
+import { FigureDownload } from "./figure-download";
 
 const graphComponents: Record<string, React.ComponentType> = {
   "oklch-grayscale-ramp": OklchGrayscaleRamp,
   "oklch-hue-ramp": OklchHueRamp,
+  "hct-blue-palette": HctBluePalette,
+  "oklch-max-chroma": OklchMaxChroma,
+  "oklch-max-chroma-compare": OklchMaxChromaCompare,
 };
 
 // Finds raw HTML nodes like <oklch-grayscale-ramp /> and converts them
@@ -92,12 +98,17 @@ function rehypeSectionize() {
 function subsectionize(children: RootContent[]): RootContent[] {
   const result: RootContent[] = [];
   let currentSub: RootContent[] = [];
+  let preH3Content: RootContent[] = [];
 
   for (const node of children) {
     const isH3 =
       node.type === "element" && (node as Element).tagName === "h3";
 
     if (isH3) {
+      if (preH3Content.length > 0) {
+        result.push(...groupContent(preH3Content));
+        preH3Content = [];
+      }
       if (currentSub.length > 0) {
         result.push({
           type: "element",
@@ -110,8 +121,12 @@ function subsectionize(children: RootContent[]): RootContent[] {
     } else if (currentSub.length > 0) {
       currentSub.push(node);
     } else {
-      result.push(node);
+      preH3Content.push(node);
     }
+  }
+
+  if (preH3Content.length > 0) {
+    result.push(...groupContent(preH3Content));
   }
 
   if (currentSub.length > 0) {
@@ -191,7 +206,11 @@ export function BlogPost({ content }: { content: string }) {
         components={Object.fromEntries(
           Object.entries(graphComponents).map(([tag, Component]) => [
             tag,
-            () => <Component />,
+            () => (
+              <FigureDownload filename={`${tag}.png`}>
+                <Component />
+              </FigureDownload>
+            ),
           ])
         )}
       >

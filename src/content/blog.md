@@ -31,23 +31,28 @@ For the same reason, setting L to the same value doesn't always give you the sam
 
 <oklch-hue-ramp />
 
-Why don’t you just decrease the L until all colors meet contrast? Good question. As lightness decreases, max chroma also decreases—and chroma controls how vibrant a color looks. As you can see in the second example below, at L=51, all colors finally pass contrast, but even with chroma set to the same 0.2, the colors in this stop appear darker and less vibrant.
+Why don’t you just decrease the L until all colors meet contrast? Good question. As lightness decreases, max chroma also decreases—and chroma controls how vibrant a color looks. As you can see in the example below, at L=53, all colors finally pass contrast, but even with chroma set to the same 0.2, the colors in this stop appear darker and less vibrant.
+
+
+<oklch-max-chroma-compare />
 
 ## Why not just HCT?
 
-Given the issues above, I turned to ChatGPT and found the HCT color space created by Google’s Material Design team. It resolved the non-uniformity issue without a problem. But in that process, I observed the hue shift issue similar to that of Lab/LCh. 
+Given the issues above, I turned to ChatGPT and found the HCT color space created by Google’s Material Design team. It resolved the non-uniformity issue without a problem. But in that process, I observed the hue shift issue similar to that of Lab/LCh. Notice the hue of the palette below shifts towards purple at the end.
 
-(I was able to build in a hue shift for my blue. It was easy to correct but then I also noticed HCT yields a less vibrant palette compared to OKLCh, possibly due to CAM 16’s inferior hue & chroma uniformity to OKLCh)
+<hct-blue-palette />
+
+(I was able to build in a hue shift for my blue. It was easy to correct but then I also noticed HCT yields a less vibrant palette compared to OKLCh, possibly due to CAM 16’s inferior hue & chroma uniformity to OKLCh.)
 
 ## My process of creating Tonal-OKLCh
 
-I’ve known about the limitations above for a while, but only came up with the idea recently when I was putting together another blog post on how to create a color system. So I got to work last weekend, and below is my process of creating the library. Needless to say, this library is all vibe coded.
+With the limitations above, I got to work. Below is my process of creating the library. Needless to say, this library is all vibe coded.
 
 1. I asked Claude to do a deep research on how exactly HCT was created and asked it to come up with an implementation plan to apply the same approach on OKLCh
 2. Prior to that, through Claude, I also found there was a library called Chromator that used this exact same approach, but in my testing, it didn’t generate a consistent contrast palette. So in the same session, I asked Claude to also search why Chromator didn’t work as well.
 3. I fed the planning doc to Claude in GitHub CLI and asked it to implement it. The results in the first iteration were already pretty good (it went from a 0.67 contrast ratio spread (4.38–5.05) down to a 0.04 spread (4.46–4.50), which can also be observed in HCT). Regardless, it was still not perfect, so I asked Claude if it could be improved.
 4. Claude successfully diagnosed the issue. It explained that “the solver hits the target luminance to floating-point precision. The ~0.04 contrast spread is purely from 8-bit hex rounding, and HCT has the same issue for the same reason. You can't eliminate it entirely because hex colors are discrete — but you can get it down to ~0.01 with a post-quantization nudge (after converting to hex, measure the actual Y of the quantized color. If it drifted from the target, nudge the channel with the most luminance weight (green usually) by ±1 to get closer.) It did just that, which gave the final result you see below. As you can see the spread is now under 0.01."
-5. Through testing, I noticed that the nudge is causing neutral colors to no longer be true neutrals (#... instead of #...), so I asked Claude to not apply nudge to neutral colors (when c=0).
+5. Through testing, I noticed that the nudge is causing neutral colors to no longer be true neutrals (#F2F4F2 instead of #F2F2F2), so I asked Claude to not apply nudge to neutral colors (when c=0).
 
 ## Method
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toPng } from "html-to-image";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,11 +12,58 @@ export function FigureDownload({
   children: React.ReactNode;
   filename?: string;
 }) {
-  const targetRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState<{ left: number; top: number } | null>(null);
+
+  useEffect(() => {
+    function measure() {
+      const wrapper = wrapperRef.current;
+      const figure = wrapper?.querySelector("figure");
+      const swatch = figure?.children[0] as HTMLElement | undefined;
+      if (!wrapper || !swatch) return;
+
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const swatchRect = swatch.getBoundingClientRect();
+      const viewportWidth = document.documentElement.clientWidth;
+      const marginRight = viewportWidth - swatchRect.right;
+
+      setPos({
+        left: swatchRect.right + marginRight / 2 - wrapperRect.left,
+        top: swatchRect.top - wrapperRect.top + swatchRect.height / 2,
+      });
+    }
+
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   const handleDownload = useCallback(async () => {
-    if (!targetRef.current) return;
-    const dataUrl = await toPng(targetRef.current, { pixelRatio: 2 });
+    const figure = wrapperRef.current?.querySelector("figure");
+    const swatch = figure?.children[0] as HTMLElement | undefined;
+    if (!swatch) return;
+
+    // Temporarily inject watermark into the swatch
+    const watermark = document.createElement("span");
+    Object.assign(watermark.style, {
+      position: "absolute",
+      left: "12px",
+      top: "12px",
+      fontFamily: "var(--font-geist-mono)",
+      fontSize: "11px",
+      lineHeight: "1",
+      color: "rgba(255, 255, 255, 0.4)",
+      pointerEvents: "none",
+      userSelect: "none",
+    });
+    watermark.textContent = "tonal-oklch.com";
+    swatch.style.position = "relative";
+    swatch.appendChild(watermark);
+
+    const dataUrl = await toPng(swatch, { pixelRatio: 2 });
+
+    swatch.removeChild(watermark);
+
     const link = document.createElement("a");
     link.download = filename;
     link.href = dataUrl;
@@ -25,31 +72,31 @@ export function FigureDownload({
 
   return (
     <div
-      style={{
-        position: "relative",
-      }}
+      ref={wrapperRef}
+      className="group"
+      style={{ position: "relative" }}
     >
-      <div ref={targetRef}>
-        {children}
-      </div>
-      <div
-        className="group"
-        style={{
-          position: "absolute",
-          right: -44,
-          top: 0,
-        }}
-      >
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={handleDownload}
-          className="opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-          aria-label={`Download ${filename}`}
+      {children}
+      {pos && (
+        <div
+          style={{
+            position: "absolute",
+            left: pos.left,
+            top: pos.top,
+            transform: "translate(-50%, -50%)",
+          }}
         >
-          <Download />
-        </Button>
-      </div>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={handleDownload}
+            className="opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+            aria-label={`Download ${filename}`}
+          >
+            <Download />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
