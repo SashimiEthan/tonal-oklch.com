@@ -71,7 +71,7 @@ export function OklchHueRamp() {
       <div style={{ borderRadius: 2, overflow: "hidden" }}>
         <HueRampStrip lightness={58.78} chroma={0.15} />
       </div>
-      <figcaption>OKLCh hue ramp showing inconsistent contrast ratios against white (L=58.78, C=0.15, H=0–360, increment of 30)</figcaption>
+      <figcaption>Inconsistent contrast ratios against white in OKLCh hue ramp (L=58.78%, C=0.15, H=0–360, increment of 30)</figcaption>
     </figure>
   );
 }
@@ -83,7 +83,7 @@ export function OklchHueRampL53() {
         <HueRampStrip lightness={58.78} chroma={0.15} />
         <HueRampStrip lightness={53} chroma={0.15} />
       </div>
-      <figcaption>OKLCh hue ramp comparison at two lightness levels (Top: L=58.78, Bottom: L=53, C=0.15, H=0–360, increment of 30)</figcaption>
+      <figcaption>OKLCh hue ramp comparison at two lightness levels (Top: L=58.78%, Bottom: L=53%, C=0.15, H=0–360, increment of 30)</figcaption>
     </figure>
   );
 }

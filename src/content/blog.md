@@ -46,7 +46,7 @@ Given the issues above, I turned to ChatGPT and found the HCT color space create
 
 <hct-blue-palette />
 
-(What I did was to build in a hue shift for the blue in the color system, which was easy to correct, but still one more thing to manage.)
+(I built in a hue shift for the blue in my color system, which was easy to implement, but still, one more thing to manage.)
 
 ## My process of creating Tonal-OKLCh
 
@@ -71,13 +71,13 @@ Below are the steps the library takes (produced by Claude)
 
 In a prior deep research report, Claude suggested that I try the following:
 
-1. OKLCh with Ottosson's toe function constants implemented as color.js’ OKLrCh library.
-2. OKLCh with facelessuser's constants.
+1. OKLCh with Björn Ottosson's toe function constants (k1=0.206, k2=0.03) implemented as color.js’ OKLrCh library.
+2. OKLCh with facelessuser's constants (k1=0.173, k2=0.004).
 3. Chromator, which used this exact same approach.
 
-<alternative-hue-ramps />
+As you can see below, these 3 approaches still yield different contrasts. From there, I had the peace of mind to finally implement my own.
 
-These 3 approaches still yield different contrasts. From there, I had the peace of mind to finally implement my own.
+<alternative-hue-ramps />
 
 ## Postface
 

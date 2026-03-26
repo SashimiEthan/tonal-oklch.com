@@ -1,16 +1,10 @@
-import fs from "fs";
-import path from "path";
-import { BlogPost } from "@/components/blog-post";
-
 export default function Home() {
-  const markdown = fs.readFileSync(
-    path.join(process.cwd(), "src", "content", "blog.md"),
-    "utf-8"
-  );
-
   return (
     <main>
-      <BlogPost content={markdown} />
+      <div style={{ padding: "2rem", textAlign: "center" }}>
+        <h1>Demo</h1>
+        <p>Coming soon.</p>
+      </div>
     </main>
   );
 }

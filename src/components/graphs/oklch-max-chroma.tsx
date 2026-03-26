@@ -98,7 +98,7 @@ function MaxChromaSvg({ lightness, chromaLine }: { lightness: number; chromaLine
         )}
       </svg>
       <figcaption>
-        L&nbsp;=&nbsp;{(lightness * 100).toFixed(2)}
+        L&nbsp;=&nbsp;{(lightness * 100).toFixed(2)}%
       </figcaption>
     </div>
   );
@@ -114,31 +114,34 @@ export function OklchMaxChroma({ lightness = 0.5878 }: { lightness?: number }) {
 
 export function OklchMaxChromaCompare() {
   const chromaLine = 0.15;
+  const chartW = 800;
   const chartH = 300;
   const plotH = chartH - PADDING.top - PADDING.bottom;
   const lineY = PADDING.top + plotH - (chromaLine / MAX_CHROMA) * plotH;
   const lineTopPct = `${(lineY / chartH) * 100}%`;
+  // Inset the line to align with the plot area (skip y-axis labels)
+  // Each graph is half the container minus half the gap. PADDING.left/chartW is the inset ratio within one graph.
+  const insetRatio = PADDING.left / chartW;
 
   return (
     <figure>
       {/* SVG row */}
       <div style={{ display: "flex", gap: 32, position: "relative" }}>
         <div style={{ flex: "1 1 0", minWidth: 0 }}>
-          <svg viewBox="0 0 800 300" style={{ width: "100%", height: "auto", display: "block" }}>
+          <svg viewBox={`0 0 ${chartW} ${chartH}`} style={{ width: "100%", height: "auto", display: "block" }}>
             <MaxChromaSvgInner lightness={0.5878} />
           </svg>
         </div>
         <div style={{ flex: "1 1 0", minWidth: 0 }}>
-          <svg viewBox="0 0 800 300" style={{ width: "100%", height: "auto", display: "block" }}>
+          <svg viewBox={`0 0 ${chartW} ${chartH}`} style={{ width: "100%", height: "auto", display: "block" }}>
             <MaxChromaSvgInner lightness={0.53} />
           </svg>
         </div>
-        {/* Shared chroma reference line spanning both graphs */}
         <div
           style={{
             position: "absolute",
             top: lineTopPct,
-            left: 0,
+            left: `calc((100% - 32px) / 2 * ${insetRatio})`,
             right: 0,
             height: 0,
             borderTop: "1px solid rgba(0, 0, 0, 0.4)",
@@ -146,7 +149,7 @@ export function OklchMaxChromaCompare() {
           }}
         />
       </div>
-      <figcaption>OKLCh max chroma comparison at two lightness levels (Left: L=58.78, Right: L=53, C=0.15)</figcaption>
+      <figcaption>OKLCh max chroma comparison at two lightness levels (Left: L=58.78%, Right: L=53%, C=0.15)</figcaption>
     </figure>
   );
 }

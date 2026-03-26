@@ -33,7 +33,7 @@ export function OklchGrayscaleRamp() {
           </div>
         ))}
       </div>
-      <figcaption>OKLCh grayscale ramp showing compressed dark end (L=0–50, increment of 2)</figcaption>
+      <figcaption>Compressed dark end in OKLCh grayscale ramp (L=0–50%, increment of 2)</figcaption>
     </figure>
   );
 }

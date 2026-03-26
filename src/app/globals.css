@@ -2,16 +2,17 @@
 @import "tailwindcss/theme" layer(theme);
 @import "tailwindcss/utilities" layer(utilities);
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import "../../node_modules/shadcn/dist/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-    --spacing-btw-section: 80px;
-    --spacing-in-section: 60px;
-    --spacing-in-subsection: 48px;
-    --spacing-in-content: 32px;
-    --spacing-in-figure: 16px;
+    --spacing-btw-section: 100px;
+    --spacing-in-section: 80px;
+    --spacing-in-subsection: 60px;
+    --spacing-in-content: 40px;
+    --spacing-in-list: 28px;
+    --spacing-in-figure: 20px;
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
@@ -44,6 +45,24 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+}
+
+nav, nav * {
+    box-sizing: border-box;
+}
+
+nav a {
+    text-decoration: none;
+    color: inherit;
+}
+
+nav {
+    font-family: var(--font-inter), sans-serif;
+}
+
+nav ul {
+    padding: 0;
+    margin: 0;
 }
 
 body {
@@ -84,12 +103,10 @@ article > * {
     grid-column: 2;
 }
 
-section > * + * {
-    margin-top: var(--spacing-in-section);
-}
-
-section > h2 + * {
-    margin-top: var(--spacing-in-subsection);
+section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-in-section);
 }
 
 .subsection {
@@ -102,6 +119,12 @@ section > h2 + * {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-in-content);
+}
+
+.content-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-in-list);
 }
 
 h1 {
@@ -127,8 +150,8 @@ h3 {
     font-size: 20px;
 }
 
-li + li{
-    margin-top: var(--spacing-in-content);
+article li + li{
+    margin-top: var(--spacing-in-list);
 }
 
 figure {

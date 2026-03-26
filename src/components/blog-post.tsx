@@ -98,6 +98,57 @@ function rehypeSectionize() {
   };
 }
 
+// Wraps h2 + all content before first h3 in .content
+// Splits when a p follows a figure/graph (p after figure stays outside)
+function wrapH2Content(children: RootContent[]): RootContent[] {
+  const filtered = children.filter((n) => !isWhitespace(n));
+  const wrapped: RootContent[] = [];
+  const remainder: RootContent[] = [];
+  let afterFigure = false;
+  let done = false;
+
+  for (const node of filtered) {
+    if (done) {
+      remainder.push(node);
+    } else if (afterFigure && isTagName(node, "p")) {
+      done = true;
+      remainder.push(node);
+    } else {
+      afterFigure = isTagName(node, "figure") || isGraph(node);
+      wrapped.push(node);
+    }
+  }
+
+  // Nest p + list pairs inside .content-list
+  const nested: RootContent[] = [];
+  for (let i = 0; i < wrapped.length; i++) {
+    if (isTagName(wrapped[i], "p") && i + 1 < wrapped.length && isTagName(wrapped[i + 1], "ol", "ul")) {
+      nested.push({
+        type: "element",
+        tagName: "div",
+        properties: { className: ["content-list"] },
+        children: [wrapped[i], wrapped[i + 1]],
+      });
+      i++;
+    } else {
+      nested.push(wrapped[i]);
+    }
+  }
+
+  const result: RootContent[] = [{
+    type: "element",
+    tagName: "div",
+    properties: { className: ["content"] },
+    children: nested,
+  }];
+
+  for (const n of remainder) {
+    result.push(n);
+  }
+
+  return result;
+}
+
 function subsectionize(children: RootContent[]): RootContent[] {
   const result: RootContent[] = [];
   let currentSub: RootContent[] = [];
@@ -109,7 +160,7 @@ function subsectionize(children: RootContent[]): RootContent[] {
 
     if (isH3) {
       if (preH3Content.length > 0) {
-        result.push(...groupContent(preH3Content));
+        result.push(...wrapH2Content(preH3Content));
         preH3Content = [];
       }
       if (currentSub.length > 0) {
@@ -129,7 +180,7 @@ function subsectionize(children: RootContent[]): RootContent[] {
   }
 
   if (preH3Content.length > 0) {
-    result.push(...groupContent(preH3Content));
+    result.push(...wrapH2Content(preH3Content));
   }
 
   if (currentSub.length > 0) {
@@ -167,12 +218,29 @@ function groupContent(children: RootContent[]): RootContent[] {
 
   const flushGroup = () => {
     if (contentGroup.length > 1) {
-      result.push({
-        type: "element",
-        tagName: "div",
-        properties: { className: ["content"] },
-        children: contentGroup,
-      });
+      const hasParagraph = contentGroup.some((n) => isTagName(n, "p"));
+      const hasHeading = contentGroup.some((n) => isTagName(n, "h3"));
+      const endsFigure = isTagName(contentGroup[contentGroup.length - 1], "figure") || isGraph(contentGroup[contentGroup.length - 1]);
+      const endsList = isTagName(contentGroup[contentGroup.length - 1], "ol", "ul");
+      if (endsFigure && (hasParagraph || hasHeading)) {
+        result.push({
+          type: "element",
+          tagName: "div",
+          properties: { className: ["content"] },
+          children: contentGroup,
+        });
+      } else if (endsList && hasParagraph) {
+        result.push({
+          type: "element",
+          tagName: "div",
+          properties: { className: ["content-list"] },
+          children: contentGroup,
+        });
+      } else {
+        for (const n of contentGroup) {
+          result.push(n);
+        }
+      }
     } else if (contentGroup.length === 1) {
       result.push(contentGroup[0]);
     }
@@ -180,12 +248,12 @@ function groupContent(children: RootContent[]): RootContent[] {
   };
 
   for (const node of filtered) {
-    if (isTagName(node, "p", "figure", "ol", "ul") || isGraph(node)) {
+    if (isTagName(node, "p", "figure", "ol", "ul", "h3") || isGraph(node)) {
       if (contentGroup.length === 0 && (isTagName(node, "figure") || isGraph(node))) {
         result.push(node);
       } else {
         contentGroup.push(node);
-        if (isTagName(node, "figure") || isGraph(node)) {
+        if (isTagName(node, "figure") || isGraph(node) || isTagName(node, "ol", "ul")) {
           flushGroup();
         }
       }

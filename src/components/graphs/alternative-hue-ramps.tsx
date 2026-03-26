@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import Color from "colorjs.io";
 import { Chromator } from "chromator";
-import { converter, parse } from "culori";
+import { converter, clampChroma, parse } from "culori";
 import { wcagLuminance, wcagContrast } from "tonal-oklch";
 
 const toRgb = converter("rgb");
@@ -38,9 +38,10 @@ interface StripData {
 function computeOklrch(Lr: number, chroma: number): StripData[] {
   const steps = Array.from({ length: 13 }, (_, i) => i * 30);
   return steps.map((hue) => {
-    const c = new Color("oklrch", [Lr, chroma, hue]);
-    const srgb = c.to("srgb");
-    const [r, g, b] = srgb.coords.map((v: number | null) =>
+    const c = new Color("oklrch", [Lr, chroma, hue])
+      .toGamut({ space: "srgb", method: "oklch.c" })
+      .to("srgb");
+    const [r, g, b] = c.coords.map((v: number | null) =>
       Math.round(Math.max(0, Math.min(1, v ?? 0)) * 255)
     );
     const hex = `#${[r, g, b].map((v: number) => v.toString(16).padStart(2, "0")).join("")}`;
@@ -52,8 +53,13 @@ function computeFacelessuser(Lr: number, chroma: number): StripData[] {
   const L = facelessuserToeInv(Lr);
   const steps = Array.from({ length: 13 }, (_, i) => i * 30);
   return steps.map((hue) => {
-    const cssColor = `oklch(${L * 100}% ${chroma} ${hue})`;
-    return { hue, hex: cssColor, contrast: contrastFromCss(cssColor) };
+    const clamped = clampChroma({ mode: "oklch", l: L, c: chroma, h: hue }, "oklch");
+    const rgb = toRgb(clamped);
+    const r = Math.round(Math.max(0, Math.min(1, rgb!.r)) * 255);
+    const g = Math.round(Math.max(0, Math.min(1, rgb!.g)) * 255);
+    const b = Math.round(Math.max(0, Math.min(1, rgb!.b)) * 255);
+    const hex = `#${[r, g, b].map((v: number) => v.toString(16).padStart(2, "0")).join("")}`;
+    return { hue, hex, contrast: contrastFromRgb(r, g, b) };
   });
 }
 
@@ -115,8 +121,8 @@ function Strip({ data }: { data: StripData[] }) {
 }
 
 export function AlternativeHueRamps() {
-  const oklrchData = useMemo(() => computeOklrch(0.5878, 0.15), []);
-  const facelessData = useMemo(() => computeFacelessuser(0.5878, 0.15), []);
+  const oklrchData = useMemo(() => computeOklrch(0.524, 0.15), []);
+  const facelessData = useMemo(() => computeFacelessuser(0.521, 0.15), []);
   const chromatorData = useMemo(() => computeChromator(0.5878, 0.15), []);
 
   return (
@@ -126,7 +132,10 @@ export function AlternativeHueRamps() {
         <Strip data={facelessData} />
         <Strip data={chromatorData} />
       </div>
-      <figcaption>Alternative hue ramps still showing inconsistent contrast ratios (Top: OKLrCh via color.js, Middle: facelessuser&apos;s constants, Bottom: Chromator, Lr=0.5878, C=0.15, H=0–360, increment of 30)</figcaption>
+      <figcaption>
+        Inconsistent contrast ratios in alternative hue ramps
+        <br />(Top: OKLrCh Lr=52.4%. Middle: facelessuser&apos;s constants Lr=52.1%. Bottom: Chromator L=58.78%. C=0.15 (simple gamut clampping), H=0–360, increment of 30)
+      </figcaption>
     </figure>
   );
 }
