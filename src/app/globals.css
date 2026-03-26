@@ -127,7 +127,7 @@ h3 {
     font-size: 20px;
 }
 
-p + ol, li + li, ol + p {
+li + li{
     margin-top: var(--spacing-in-content);
 }
 

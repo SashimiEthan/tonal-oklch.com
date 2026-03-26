@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { toPng } from "html-to-image";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,10 +13,14 @@ export function FigureDownload({
   children: React.ReactNode;
   filename?: string;
 }) {
+  const searchParams = useSearchParams();
+  const showDownload = searchParams.get("dl") === "1";
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState<{ left: number; top: number } | null>(null);
 
   useEffect(() => {
+    if (!showDownload) return;
+
     function measure() {
       const wrapper = wrapperRef.current;
       const figure = wrapper?.querySelector("figure");
@@ -36,33 +41,14 @@ export function FigureDownload({
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
-  }, []);
+  }, [showDownload]);
 
   const handleDownload = useCallback(async () => {
     const figure = wrapperRef.current?.querySelector("figure");
     const swatch = figure?.children[0] as HTMLElement | undefined;
     if (!swatch) return;
 
-    // Temporarily inject watermark into the swatch
-    const watermark = document.createElement("span");
-    Object.assign(watermark.style, {
-      position: "absolute",
-      left: "12px",
-      top: "12px",
-      fontFamily: "var(--font-geist-mono)",
-      fontSize: "11px",
-      lineHeight: "1",
-      color: "rgba(255, 255, 255, 0.4)",
-      pointerEvents: "none",
-      userSelect: "none",
-    });
-    watermark.textContent = "tonal-oklch.com";
-    swatch.style.position = "relative";
-    swatch.appendChild(watermark);
-
     const dataUrl = await toPng(swatch, { pixelRatio: 2 });
-
-    swatch.removeChild(watermark);
 
     const link = document.createElement("a");
     link.download = filename;
@@ -77,7 +63,7 @@ export function FigureDownload({
       style={{ position: "relative" }}
     >
       {children}
-      {pos && (
+      {showDownload && pos && (
         <div
           style={{
             position: "absolute",

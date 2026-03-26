@@ -40,7 +40,7 @@ export function HctBluePalette() {
           );
         })}
       </div>
-      <figcaption>HCT blue palette showing hue shift (H: 260, C: 50, T: 5–95, increment of 5)</figcaption>
+      <figcaption>HCT blue palette showing hue shift (H=260, C=50, T=5–95, increment of 5)</figcaption>
     </figure>
   );
 }

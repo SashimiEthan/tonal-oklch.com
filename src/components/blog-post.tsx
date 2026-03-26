@@ -4,7 +4,8 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { Root, Element, RootContent } from "hast";
 import { OklchGrayscaleRamp } from "./graphs/oklch-grayscale-ramp";
-import { OklchHueRamp } from "./graphs/oklch-hue-ramp";
+import { OklchHueRamp, OklchHueRampL53 } from "./graphs/oklch-hue-ramp";
+import { AlternativeHueRamps } from "./graphs/alternative-hue-ramps";
 import { HctBluePalette } from "./graphs/hct-blue-palette";
 import { OklchMaxChroma, OklchMaxChromaCompare } from "./graphs/oklch-max-chroma";
 import { FigureDownload } from "./figure-download";
@@ -12,6 +13,8 @@ import { FigureDownload } from "./figure-download";
 const graphComponents: Record<string, React.ComponentType> = {
   "oklch-grayscale-ramp": OklchGrayscaleRamp,
   "oklch-hue-ramp": OklchHueRamp,
+  "oklch-hue-ramp-l53": OklchHueRampL53,
+  "alternative-hue-ramps": AlternativeHueRamps,
   "hct-blue-palette": HctBluePalette,
   "oklch-max-chroma": OklchMaxChroma,
   "oklch-max-chroma-compare": OklchMaxChromaCompare,

@@ -114,14 +114,14 @@ export function OklchMaxChroma({ lightness = 0.5878 }: { lightness?: number }) {
 
 export function OklchMaxChromaCompare() {
   const chromaLine = 0.15;
-  const plotH = 300 - PADDING.top - PADDING.bottom;
-  const yPos = PADDING.top + plotH - (chromaLine / MAX_CHROMA) * plotH;
-  // SVG aspect ratio is 800:300, so yPercent maps to the SVG portion only
-  const yPercent = (yPos / 300) * 100;
+  const chartH = 300;
+  const plotH = chartH - PADDING.top - PADDING.bottom;
+  const lineY = PADDING.top + plotH - (chromaLine / MAX_CHROMA) * plotH;
+  const lineTopPct = `${(lineY / chartH) * 100}%`;
 
   return (
     <figure>
-      {/* SVG row with spanning line */}
+      {/* SVG row */}
       <div style={{ display: "flex", gap: 32, position: "relative" }}>
         <div style={{ flex: "1 1 0", minWidth: 0 }}>
           <svg viewBox="0 0 800 300" style={{ width: "100%", height: "auto", display: "block" }}>
@@ -133,30 +133,26 @@ export function OklchMaxChromaCompare() {
             <MaxChromaSvgInner lightness={0.53} />
           </svg>
         </div>
+        {/* Shared chroma reference line spanning both graphs */}
         <div
           style={{
             position: "absolute",
-            top: `${yPercent}%`,
+            top: lineTopPct,
             left: 0,
             right: 0,
-            height: 1,
-            backgroundColor: "black",
-            opacity: 0.25,
+            height: 0,
+            borderTop: "1px solid rgba(0, 0, 0, 0.4)",
             pointerEvents: "none",
           }}
         />
       </div>
-      {/* Captions below, outside the line container */}
-      <div style={{ display: "flex", gap: 16 }}>
-        <figcaption style={{ flex: "1 1 0" }}>L&nbsp;=&nbsp;58.78</figcaption>
-        <figcaption style={{ flex: "1 1 0" }}>L&nbsp;=&nbsp;53</figcaption>
-      </div>
+      <figcaption>OKLCh max chroma comparison at two lightness levels (Left: L=58.78, Right: L=53, C=0.15)</figcaption>
     </figure>
   );
 }
 
 /** SVG-only content (no wrapper div/figcaption) for use inside a shared SVG element */
-function MaxChromaSvgInner({ lightness }: { lightness: number }) {
+function MaxChromaSvgInner({ lightness, chromaLine }: { lightness: number; chromaLine?: number }) {
   const data = useMemo(() => chromaVsHue(lightness), [lightness]);
 
   const chartW = 800;
@@ -224,6 +220,19 @@ function MaxChromaSvgInner({ lightness }: { lightness: number }) {
           {c.toFixed(1)}
         </text>
       ))}
+
+      {/* Optional horizontal chroma reference line */}
+      {chromaLine != null && (
+        <line
+          x1={PADDING.left}
+          y1={y(chromaLine)}
+          x2={chartW - PADDING.right}
+          y2={y(chromaLine)}
+          stroke="black"
+          strokeOpacity={0.4}
+          strokeWidth={1}
+        />
+      )}
     </>
   );
 }
