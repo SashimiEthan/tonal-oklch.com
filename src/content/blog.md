@@ -1,9 +1,5 @@
 # Tonal OKLCh
 
-## Preface
-
-I’m no color scientist - if color science is an iceberg, I probably only know the tip of it. But I’m always eager to learn more. That said, if anything below is inaccurate, please let me know and I’d love to learn from it.
-
 ## What is Tonal OKLCh?
 
 Tonal OKLCh is HCT but with OKLCh. Material's HCT combines CAM 16’s hue and chroma with CIE L*, which has better lightness uniformity than OKLCh. But CAM 16 still has the blue-purple hue shift issue similar to Lab, which OKLCh set out to solve. So I thought, what about piecing together the hue & chroma from OKLCh and CIE L* to achieve a better result? From there, tonal OKLCh was born.
@@ -79,7 +75,9 @@ As you can see below, these 3 approaches still yield different contrasts. From t
 
 <alternative-hue-ramps />
 
-## Postface
+## Outro
+
+I’m no color scientist - if color science is an iceberg, I probably only know the tip of it. But I’m always eager to learn more. That said, if anything above is inaccurate, please let me know and I’d love to learn from it.
 
 Tonal OKLCh is a bit long, especially as a function name, and I thought about naming it OKTCh, but ultimately, it didn’t feel like I created a new color space. The real hard work was done by the people who created OKLCh and HCT, so I wanted to pay tribute to them by preserving the two color spaces’ names that make up Tonal OKLCh.
 

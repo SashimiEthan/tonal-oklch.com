@@ -9,9 +9,11 @@ import { Button } from "@/components/ui/button";
 export function FigureDownload({
   children,
   filename = "graph.png",
+  captureWholeFigure = false,
 }: {
   children: React.ReactNode;
   filename?: string;
+  captureWholeFigure?: boolean;
 }) {
   const searchParams = useSearchParams();
   const showDownload = searchParams.get("dl") === "1";
@@ -24,17 +26,25 @@ export function FigureDownload({
     function measure() {
       const wrapper = wrapperRef.current;
       const figure = wrapper?.querySelector("figure");
-      const swatch = figure?.children[0] as HTMLElement | undefined;
-      if (!wrapper || !swatch) return;
+      if (!wrapper || !figure) return;
 
+      // Find bounds of the actual swatch area
+      const swatches = figure.querySelectorAll(".swatch");
+      if (swatches.length === 0) return;
+
+      const firstRect = swatches[0].getBoundingClientRect();
+      const lastRect = swatches[swatches.length - 1].getBoundingClientRect();
       const wrapperRect = wrapper.getBoundingClientRect();
-      const swatchRect = swatch.getBoundingClientRect();
       const viewportWidth = document.documentElement.clientWidth;
-      const marginRight = viewportWidth - swatchRect.right;
+
+      const paletteTop = firstRect.top;
+      const paletteBottom = lastRect.bottom;
+      const paletteRight = Math.max(firstRect.right, lastRect.right);
+      const marginRight = viewportWidth - paletteRight;
 
       setPos({
-        left: swatchRect.right + marginRight / 2 - wrapperRect.left,
-        top: swatchRect.top - wrapperRect.top + swatchRect.height / 2,
+        left: paletteRight + marginRight / 2 - wrapperRect.left,
+        top: paletteTop + (paletteBottom - paletteTop) / 2 - wrapperRect.top,
       });
     }
 
@@ -45,10 +55,12 @@ export function FigureDownload({
 
   const handleDownload = useCallback(async () => {
     const figure = wrapperRef.current?.querySelector("figure");
-    const swatch = figure?.children[0] as HTMLElement | undefined;
-    if (!swatch) return;
+    if (!figure) return;
 
-    const dataUrl = await toPng(swatch, { pixelRatio: 2 });
+    const target = captureWholeFigure ? figure : (figure.children[0] as HTMLElement | undefined);
+    if (!target) return;
+
+    const dataUrl = await toPng(target as HTMLElement, { pixelRatio: 2 });
 
     const link = document.createElement("a");
     link.download = filename;

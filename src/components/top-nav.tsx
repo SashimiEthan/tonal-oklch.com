@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import {
@@ -14,7 +15,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { label: "Color palettes", href: "/" },
+  { label: "Color demo", href: "/" },
   { label: "What is Tonal-OKLCh", href: "/about" },
 ];
 
@@ -24,23 +25,71 @@ export function TopNav() {
   const query = searchParams.toString();
   const suffix = query ? `?${query}` : "";
 
+  const [visible, setVisible] = useState(true);
+  const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    function handleScroll() {
+      const y = window.scrollY;
+
+      // Always show at top of page
+      if (y < 10) {
+        setVisible(true);
+        return;
+      }
+
+      // Hide while scrolling down
+      if (y > lastScrollY.current) {
+        setVisible(false);
+      }
+      lastScrollY.current = y;
+
+      // Show again after scroll stops
+      if (scrollTimer.current) clearTimeout(scrollTimer.current);
+      scrollTimer.current = setTimeout(() => setVisible(true), 1000);
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollTimer.current) clearTimeout(scrollTimer.current);
+    };
+  }, []);
+
   return (
-    <nav className="flex items-center justify-between px-3 py-3" style={{ borderBottom: "1px solid var(--stroke)" }}>
-      <NavigationMenu>
-        <NavigationMenuList>
+    <nav
+      className="flex items-center justify-between px-3 py-3"
+      style={{
+        borderBottom: "1px solid var(--stroke)",
+        position: "sticky",
+        top: 0,
+        zIndex: 40,
+        background: "var(--background)",
+        transform: visible ? "translateY(0)" : "translateY(-100%)",
+        transition: "transform 0.5s ease",
+      }}
+    >
+      <div className="flex items-center gap-0">
+        <NavigationMenu>
+          <NavigationMenuList>
           {navItems.map(({ label, href }) => (
             <NavigationMenuItem key={href}>
               <NavigationMenuLink
                 render={<Link href={`${href}${suffix}`} />}
                 active={pathname === href}
-                className={navigationMenuTriggerStyle()}
+                className={cn(navigationMenuTriggerStyle(), "data-active:bg-muted/60")}
               >
                 {label}
               </NavigationMenuLink>
             </NavigationMenuItem>
           ))}
         </NavigationMenuList>
-      </NavigationMenu>
+        </NavigationMenu>
+      </div>
+      <Link href="/" className="absolute left-1/2 -translate-x-1/2 font-semibold text-sm hover:opacity-70 transition-opacity">
+        Tonal-OKLCh
+      </Link>
       <div className="flex items-center gap-2">
         <code className="text-xs text-muted-foreground font-mono select-all">
           npm install tonal-oklch

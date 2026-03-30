@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "theme": "node scripts/generate-theme.mjs",
+    "theme:watch": "node --watch scripts/generate-theme.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",

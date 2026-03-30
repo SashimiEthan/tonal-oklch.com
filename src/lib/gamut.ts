@@ -11,7 +11,6 @@ function inSrgb(r: number, g: number, b: number): boolean {
       && b >= -0.0001 && b <= 1.0001;
 }
 
-/** Binary search for the highest in-gamut sRGB chroma at a given OKLCh lightness and hue. */
 export function maxChroma(l: number, h: number): number {
   if (l <= 0 || l >= 1) return 0;
   let lo = 0;
