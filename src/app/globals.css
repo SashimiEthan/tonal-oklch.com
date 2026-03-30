@@ -8,7 +8,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-    --space-section: 100px;
+    --space-section: 80px;
     --space-subsection: 60px;
     --space-content: 40px;
     --space-related: 28px;
@@ -132,18 +132,18 @@ article > * + * {
 }
 
 /* Section break */
-article > * + h2 {
+article > * + h1 {
     margin-top: var(--space-section);
 }
 
 /* Subsection break */
-article > * + h3 {
+article > * + h2 {
     margin-top: var(--space-subsection);
 }
 
 /* Heading affinity: content belongs to its heading */
-article > h2 + *,
-article > h3 + * {
+article > h1 + *,
+article > h2 + * {
     margin-top: var(--space-content);
 }
 
@@ -179,12 +179,19 @@ h1 {
 }
 
 article h1 {
-    text-align: center;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 600;
+}
+
+article h2 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
 }
 
 .home h1 {
-    font-size: 1.875rem;
-    line-height: 2.25rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
     font-weight: 600;
 }
 
