@@ -20,6 +20,34 @@ const graphComponents: Record<string, React.ComponentType> = {
   "oklch-max-chroma-compare": OklchMaxChromaCompare,
 };
 
+// Inserts a dot-divider <div> before each h1 that follows other content
+function rehypeSectionDividers() {
+  return (tree: Root) => {
+    let seenH1 = false;
+    tree.children = tree.children.flatMap((node): RootContent[] => {
+      if (node.type === "element" && (node as Element).tagName === "h1") {
+        if (seenH1) {
+          const makeDot = (): Element => ({
+            type: "element",
+            tagName: "span",
+            properties: { className: ["section-dot"] },
+            children: [],
+          });
+          const divider: Element = {
+            type: "element",
+            tagName: "div",
+            properties: { className: ["section-divider"] },
+            children: [makeDot(), makeDot(), makeDot()],
+          };
+          return [divider, node];
+        }
+        seenH1 = true;
+      }
+      return [node];
+    });
+  };
+}
+
 // Converts raw HTML nodes like <oklch-grayscale-ramp /> to proper HAST elements
 function rehypeGraphs() {
   return (tree: Root) => {
@@ -62,7 +90,7 @@ export function BlogPost({ content }: { content: string }) {
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         remarkRehypeOptions={{ allowDangerousHtml: true }}
-        rehypePlugins={[rehypeGraphs]}
+        rehypePlugins={[rehypeGraphs, rehypeSectionDividers]}
         components={Object.fromEntries(
           Object.entries(graphComponents).map(([tag, Component]) => [
             tag,

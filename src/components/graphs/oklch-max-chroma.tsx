@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { chromaVsHue } from "@/lib/gamut";
 
-const PADDING = { top: 5, right: 0, bottom: 4, left: 29 };
+const PADDING = { top: 5, right: 0, bottom: 5, left: 29 };
 const MAX_CHROMA = 0.4;
 
 function MaxChromaSvg({ lightness, chromaLine }: { lightness: number; chromaLine?: number }) {

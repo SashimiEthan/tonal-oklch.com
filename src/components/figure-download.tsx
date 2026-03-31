@@ -28,23 +28,34 @@ export function FigureDownload({
       const figure = wrapper?.querySelector("figure");
       if (!wrapper || !figure) return;
 
-      // Find bounds of the actual swatch area
-      const swatches = figure.querySelectorAll(".swatch");
-      if (swatches.length === 0) return;
-
-      const firstRect = swatches[0].getBoundingClientRect();
-      const lastRect = swatches[swatches.length - 1].getBoundingClientRect();
       const wrapperRect = wrapper.getBoundingClientRect();
       const viewportWidth = document.documentElement.clientWidth;
 
-      const paletteTop = firstRect.top;
-      const paletteBottom = lastRect.bottom;
-      const paletteRight = Math.max(firstRect.right, lastRect.right);
-      const marginRight = viewportWidth - paletteRight;
+      // Find bounds of the actual swatch area, or fall back to the figure
+      const swatches = figure.querySelectorAll(".swatch");
+      let contentTop: number;
+      let contentBottom: number;
+      let contentRight: number;
+
+      if (swatches.length > 0) {
+        const firstRect = swatches[0].getBoundingClientRect();
+        const lastRect = swatches[swatches.length - 1].getBoundingClientRect();
+        contentTop = firstRect.top;
+        contentBottom = lastRect.bottom;
+        contentRight = Math.max(firstRect.right, lastRect.right);
+      } else {
+        const content = figure.children[0] as HTMLElement | null;
+        const rect = content?.getBoundingClientRect() ?? figure.getBoundingClientRect();
+        contentTop = rect.top;
+        contentBottom = rect.bottom;
+        contentRight = rect.right;
+      }
+
+      const marginRight = viewportWidth - contentRight;
 
       setPos({
-        left: paletteRight + marginRight / 2 - wrapperRect.left,
-        top: paletteTop + (paletteBottom - paletteTop) / 2 - wrapperRect.top,
+        left: contentRight + marginRight / 2 - wrapperRect.left,
+        top: contentTop + (contentBottom - contentTop) / 2 - wrapperRect.top,
       });
     }
 
@@ -71,7 +82,7 @@ export function FigureDownload({
   return (
     <div
       ref={wrapperRef}
-      className="group"
+      className="group figure-download-wrapper"
       style={{ position: "relative" }}
     >
       {children}

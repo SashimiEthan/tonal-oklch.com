@@ -3,6 +3,7 @@ import { Inter, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Retune } from "retune";
 import { TopNav } from "@/components/top-nav";
+import { Footer } from "@/components/footer";
 import "./globals.css";
 import "./theme.css";
 import { cn } from "@/lib/utils";
@@ -37,6 +38,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <TopNav />
           {children}
+          <Footer />
           <Retune />
         </ThemeProvider>
       </body>

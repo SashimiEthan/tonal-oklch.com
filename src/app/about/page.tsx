@@ -9,7 +9,7 @@ export default function About() {
   );
 
   return (
-    <main>
+    <main style={{ "--space-page-margin": "40px" } as React.CSSProperties}>
       <BlogPost content={markdown} />
     </main>
   );
