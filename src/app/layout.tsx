@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Inter, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Retune } from "retune";
@@ -36,7 +37,9 @@ export default function RootLayout({
     >
       <body className="bg-background text-foreground">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <TopNav />
+          <Suspense>
+            <TopNav />
+          </Suspense>
           {children}
           <Footer />
           <Retune />

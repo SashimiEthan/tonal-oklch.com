@@ -1,12 +1,30 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { toPng } from "html-to-image";
 import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function FigureDownload({
+  children,
+  filename = "graph.png",
+  captureWholeFigure = false,
+}: {
+  children: React.ReactNode;
+  filename?: string;
+  captureWholeFigure?: boolean;
+}) {
+  return (
+    <Suspense fallback={children}>
+      <FigureDownloadInner filename={filename} captureWholeFigure={captureWholeFigure}>
+        {children}
+      </FigureDownloadInner>
+    </Suspense>
+  );
+}
+
+function FigureDownloadInner({
   children,
   filename = "graph.png",
   captureWholeFigure = false,
