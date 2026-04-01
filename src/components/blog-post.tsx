@@ -8,6 +8,7 @@ import { OklchHueRamp, OklchHueRampL53 } from "./graphs/oklch-hue-ramp";
 import { AlternativeHueRamps } from "./graphs/alternative-hue-ramps";
 import { HctBluePalette } from "./graphs/hct-blue-palette";
 import { OklchMaxChroma, OklchMaxChromaCompare } from "./graphs/oklch-max-chroma";
+import { TonalOklchHueRamp } from "./graphs/tonal-oklch-hue-ramp";
 import { FigureDownload } from "./figure-download";
 
 const graphComponents: Record<string, React.ComponentType> = {
@@ -18,6 +19,7 @@ const graphComponents: Record<string, React.ComponentType> = {
   "hct-blue-palette": HctBluePalette,
   "oklch-max-chroma": OklchMaxChroma,
   "oklch-max-chroma-compare": OklchMaxChromaCompare,
+  "tonal-oklch-hue-ramp": TonalOklchHueRamp,
 };
 
 // Inserts a dot-divider <div> before each h1 that follows other content
