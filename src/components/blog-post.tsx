@@ -93,16 +93,29 @@ export function BlogPost({ content }: { content: string }) {
         remarkPlugins={[remarkGfm]}
         remarkRehypeOptions={{ allowDangerousHtml: true }}
         rehypePlugins={[rehypeGraphs, rehypeSectionDividers]}
-        components={Object.fromEntries(
-          Object.entries(graphComponents).map(([tag, Component]) => [
-            tag,
-            () => (
-              <FigureDownload filename={`${tag}.png`}>
-                <Component />
-              </FigureDownload>
-            ),
-          ])
-        )}
+        components={{
+          ...Object.fromEntries(
+            Object.entries(graphComponents).map(([tag, Component]) => [
+              tag,
+              () => (
+                <FigureDownload filename={`${tag}.png`}>
+                  <Component />
+                </FigureDownload>
+              ),
+            ])
+          ),
+          a: ({ href, children, ...props }) => (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+              {...props}
+            >
+              {children}
+            </a>
+          ),
+        }}
       >
         {content}
       </ReactMarkdown>
