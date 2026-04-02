@@ -60,6 +60,7 @@ export function NeutralPalette() {
                 chroma={0}
                 oklch={result.oklch}
                 rgb={result.rgb8}
+                tooltipBelow
                 boxShadow={tone === 100 ? "inset 0.5px 0 0 0 var(--border), inset 0 0.5px 0 0 var(--border), inset 0 -0.5px 0 0 var(--border)" : undefined}
                 borderRadius={tone === 100 ? "2px 0 0 2px" : undefined}
               />

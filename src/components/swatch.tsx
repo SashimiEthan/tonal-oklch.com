@@ -12,6 +12,7 @@ interface SwatchProps {
   height?: number;
   boxShadow?: string;
   borderRadius?: string;
+  tooltipBelow?: boolean;
   children?: React.ReactNode;
 }
 
@@ -25,6 +26,7 @@ export function Swatch({
   height = 60,
   boxShadow,
   borderRadius,
+  tooltipBelow,
   children,
 }: SwatchProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -62,6 +64,7 @@ export function Swatch({
       ref={ref}
       className="swatch"
       onClick={handleClick}
+      {...(tooltipBelow ? { "data-tooltip-below": "" } : {})}
       style={{
         flex: 1,
         height,

@@ -321,6 +321,12 @@ article h2 {
     visibility: visible;
 }
 
+/* Show tooltip below the swatch in sections near the top of the page */
+.swatch[data-tooltip-below] > .swatch-tooltip {
+    bottom: auto;
+    top: calc(100% + 8px);
+}
+
 /* Copied toast */
 .swatch[data-copied]::before {
     content: "Copied";
