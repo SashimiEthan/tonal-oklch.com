@@ -43,6 +43,7 @@ export default function RootLayout({
           </Suspense>
           {children}
           <Footer />
+          <Analytics />
           <Retune />
         </ThemeProvider>
       </body>
