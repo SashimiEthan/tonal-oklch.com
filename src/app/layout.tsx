@@ -23,6 +23,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Tonal-OKLCh",
   description: "HCT's approach applied to OKLCh for lightness-uniform, contrast-consistent color palettes.",
+  verification: {
+    google: "bnQWieKWhPNzjBQy4CSGCs0C9TtFt4pqGs-W_HpocXs",
+  },
   openGraph: {
     title: "Tonal-OKLCh",
     description: "HCT's approach applied to OKLCh for lightness-uniform, contrast-consistent color palettes.",
