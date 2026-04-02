@@ -8,6 +8,7 @@ import { Footer } from "@/components/footer";
 import "./globals.css";
 import "./theme.css";
 import { cn } from "@/lib/utils";
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({
   variable: "--font-inter",
