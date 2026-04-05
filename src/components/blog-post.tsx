@@ -10,6 +10,7 @@ import { HctBluePalette } from "./graphs/hct-blue-palette";
 import { OklchMaxChroma, OklchMaxChromaCompare } from "./graphs/oklch-max-chroma";
 import { TonalOklchHueRamp } from "./graphs/tonal-oklch-hue-ramp";
 import { FigureDownload } from "./figure-download";
+import { ThemeLink } from "./theme-link";
 
 const graphComponents: Record<string, React.ComponentType> = {
   "oklch-grayscale-ramp": OklchGrayscaleRamp,
@@ -104,17 +105,23 @@ export function BlogPost({ content }: { content: string }) {
               ),
             ])
           ),
-          a: ({ href, children, ...props }) => (
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline"
-              {...props}
-            >
-              {children}
-            </a>
-          ),
+          a: ({ href, children, ...props }) => {
+            const themeMatch = href?.match(/^#theme-(.+)$/);
+            if (themeMatch) {
+              return <ThemeLink theme={themeMatch[1]}>{children}</ThemeLink>;
+            }
+            return (
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+                {...props}
+              >
+                {children}
+              </a>
+            );
+          },
         }}
       >
         {content}

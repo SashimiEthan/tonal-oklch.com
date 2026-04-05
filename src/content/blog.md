@@ -1,23 +1,25 @@
 # What is Tonal-OKLCh?
 
-Tonal-OKLCh is like [HCT](https://material.io/blog/science-of-color-design) but with [OKLCh](https://bottosson.github.io/posts/oklab/). Material's HCT combines [CAM16](https://en.wikipedia.org/wiki/CIECAM02#CAM16)’s hue and chroma with [CIE L*](https://en.wikipedia.org/wiki/CIELAB_color_space), which has better lightness uniformity than OKLCh. But CAM16 still has the blue-purple hue shift issue similar to Lab, which OKLCh set out to solve. So I thought, if I piece together the hue & chroma from OKLCh and CIE L*, will it achieve a better result? From there, Tonal-OKLCh was created.
+Tonal-OKLCh is a hybrid color space that combines [OKLCh](https://bottosson.github.io/posts/oklab/)'s perceptual hue and chroma with [CIE L*](https://en.wikipedia.org/wiki/CIELAB_color_space) to achieve better contrast consistency.
+
+It's inspired by Material's [HCT](https://material.io/blog/science-of-color-design), which combines [CAM16](https://en.wikipedia.org/wiki/CIECAM02#CAM16)’s hue and chroma with CIE L*. While CIE L* has better lightness uniformity than OKLCh, CAM16 still has the blue-purple hue shift issue similar to Lab, which OKLCh set out to solve. So I thought, what if I replace CAM16 with OKLCh and pair its hue & chroma with CIE L* instead? From there, Tonal-OKLCh was created.
 
 # Why not just OKLCh?
 
-When I was designing the color system for our team, I noticed OKLCh’s non-uniform lightness issue, which had two main consequences:
+OKLCh has a non-uniform lightness scale, which had two main consequences:
 
 - Compressed dark end.
 - Varying contrast ratio (more prominent for middle of the ramp colors).
 
 ## Compressed dark end
 
-As you can see from the graph below, in increments of 2, the dark end of the ramp is barely distinguishable till the lightness value is above 18.
+As you can see from the graph below, in increments of 2, the dark end of the ramp is barely distinguishable (even in [dark mode](#theme-dark)) till the lightness value is above 18.
 
 <oklch-grayscale-ramp />
 
 The practical implication is, in light mode, if I set the page background color to L=100 and the layer color to L=98, I couldn’t maintain the same distance in dark mode by choosing L=10 and L=12, because those two colors would be too close together.
 
-(I had compensated for this problem with a conversion table between OKLCh L and LCh L, where for example when I say grey 10, it’s actually LCh 10, and it converts to 22 in OKLCh. <- And this is the actual L value I’m using to generate the color. I always thought it was less elegant and it didn’t resolve the issue below.)
+(In my color system, I had compensated for this problem with a conversion table between OKLCh L and LCh L, where for example when I say grey 10, it’s actually LCh 10, and it converts to 22 in OKLCh. <- And this is the actual L value I’m using to generate the color. I always thought it was less elegant and it didn’t resolve the issue below.)
 
 ## Inconsistent contrast ratio
 
@@ -36,7 +38,7 @@ In practice, the colors in this stop appear darker and less vibrant.
 
 # Why not just HCT?
 
-Given the issues above, I turned to ChatGPT and found the HCT color space created by Google’s Material Design team. It resolved the non-uniformity issue without a problem. But in that process, I observed the [hue shift issue similar to that of Lab/LCh](https://bottosson.github.io/posts/oklab/#blending-colors). Notice the hue of the palette below shifts towards purple at the end.
+The HCT color space created by Google’s Material Design team resolves the non-uniformity issue without a problem. But we still see the [hue shift issue similar to that of Lab/LCh](https://bottosson.github.io/posts/oklab/#blending-colors). Notice the hue of the palette below shifts towards purple at the end.
 
 <hct-blue-palette />
 
@@ -71,7 +73,7 @@ In a prior deep research report, Claude suggested that I try the following:
 2. OKLCh with [facelessuser's constants](https://gist.github.com/facelessuser/0235cb0fecc35c4e06a8195d5e18947b) (k1=0.173, k2=0.004).
 3. Chromator, which uses the same concept (but doesn't re-verify luminance after gamut mapping).
 
-As you can see below, these 3 approaches still yield different contrasts. From there, I knew it was worth implementing my own.
+As you can see below, these 3 approaches still yield different contrasts. From there, I confirmed it was worth implementing my own.
 
 <alternative-hue-ramps />
 
