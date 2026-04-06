@@ -5,8 +5,9 @@ export function OklchGrayscaleRamp() {
 
   return (
     <figure>
-      <div style={{ display: "flex", width: "100%", borderRadius: 2, overflow: "hidden" }}>
-        {steps.map((lightness) => (
+      <div style={{ overflowX: "auto", borderRadius: 2 }}>
+        <div style={{ display: "flex", width: "100%", minWidth: 26 * 44 }}>
+          {steps.map((lightness) => (
           <div
             key={lightness}
             style={{
@@ -32,6 +33,7 @@ export function OklchGrayscaleRamp() {
             </span>
           </div>
         ))}
+        </div>
       </div>
       <figcaption>Compressed dark end in OKLCh grayscale ramp (L=0–50%, increment of 2)</figcaption>
     </figure>

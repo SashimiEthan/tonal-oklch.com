@@ -7,8 +7,9 @@ export function HctBluePalette() {
 
   return (
     <figure>
-      <div style={{ display: "flex", width: "100%", borderRadius: 2, overflow: "hidden" }}>
-        {steps.map((tone) => {
+      <div style={{ overflowX: "auto", borderRadius: 2 }}>
+        <div style={{ display: "flex", width: "100%", minWidth: 19 * 44 }}>
+          {steps.map((tone) => {
           const hct = Hct.from(260, 50, tone);
           const hex = hexFromArgb(hct.toInt());
 
@@ -39,6 +40,7 @@ export function HctBluePalette() {
             </div>
           );
         })}
+        </div>
       </div>
       <figcaption>HCT blue palette showing hue shift (H=260, C=50, T=5–95, increment of 5)</figcaption>
     </figure>

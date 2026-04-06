@@ -89,7 +89,7 @@ function FigureDownloadInner({
     const target = captureWholeFigure ? figure : (figure.children[0] as HTMLElement | undefined);
     if (!target) return;
 
-    const dataUrl = await toPng(target as HTMLElement, { pixelRatio: 2 });
+    const dataUrl = await toPng(target as HTMLElement, { pixelRatio: 3 });
 
     const link = document.createElement("a");
     link.download = filename;

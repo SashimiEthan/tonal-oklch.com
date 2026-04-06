@@ -17,7 +17,7 @@ function HueRampStrip({ lightness, chroma }: { lightness: number; chroma: number
   const steps = Array.from({ length: 13 }, (_, i) => i * 30);
 
   return (
-    <div style={{ display: "flex", width: "100%" }}>
+    <div style={{ display: "flex", width: "100%", minWidth: 13 * 44 }}>
       {steps.map((hue) => {
         const cssColor = `oklch(${lightness}% ${chroma} ${hue})`;
         const contrast = contrastAgainstWhite(cssColor);
@@ -68,7 +68,7 @@ function HueRampStrip({ lightness, chroma }: { lightness: number; chroma: number
 export function OklchHueRamp() {
   return (
     <figure>
-      <div style={{ borderRadius: 2, overflow: "hidden" }}>
+      <div style={{ borderRadius: 2, overflowX: "auto" }}>
         <HueRampStrip lightness={58.78} chroma={0.15} />
       </div>
       <figcaption>Inconsistent contrast ratios against white in OKLCh hue ramp (L=58.78%, C=0.15, H=0–360, increment of 30)</figcaption>
@@ -79,7 +79,7 @@ export function OklchHueRamp() {
 export function OklchHueRampL53() {
   return (
     <figure>
-      <div style={{ display: "flex", flexDirection: "column", gap: 0, borderRadius: 2, overflow: "hidden" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 0, borderRadius: 2, overflowX: "auto" }}>
         <HueRampStrip lightness={58.78} chroma={0.15} />
         <HueRampStrip lightness={53} chroma={0.15} />
       </div>

@@ -2,7 +2,7 @@
 
 Tonal-OKLCh is a hybrid color space that combines [OKLCh](https://bottosson.github.io/posts/oklab/)'s perceptual hue and chroma with [CIE L*](https://en.wikipedia.org/wiki/CIELAB_color_space) to achieve better contrast consistency.
 
-It's inspired by Material's [HCT](https://material.io/blog/science-of-color-design), which combines [CAM16](https://en.wikipedia.org/wiki/CIECAM02#CAM16)’s hue and chroma with CIE L*. While CIE L* has better lightness uniformity than OKLCh, CAM16 still has the blue-purple hue shift issue similar to Lab, which OKLCh set out to solve. So I thought, what if I replace CAM16 with OKLCh and pair its hue & chroma with CIE L* instead? From there, Tonal-OKLCh was created.
+It's inspired by Material's [HCT](https://material.io/blog/science-of-color-design), which combines [CAM16](https://en.wikipedia.org/wiki/CIECAM02#CAM16)’s hue and chroma with CIE L*. While CIE L* has better lightness uniformity than OKLCh, CAM16 still has the blue-purple hue shift issue similar to Lab, which OKLCh set out to solve. So I thought, what if I replace CAM16 with OKLCh? From there, Tonal-OKLCh was created.
 
 # Why not just OKLCh?
 
@@ -38,7 +38,7 @@ In practice, the colors in this stop appear darker and less vibrant.
 
 # Why not just HCT?
 
-The HCT color space created by Google’s Material Design team resolves the non-uniformity issue without a problem. But we still see the [hue shift issue similar to that of Lab/LCh](https://bottosson.github.io/posts/oklab/#blending-colors). Notice the hue of the palette below shifts towards purple at the end.
+The HCT color space created by Google’s Material Design team resolves the non-uniformity issue without a problem. But we still see the [hue shift issue](https://bottosson.github.io/posts/oklab/#blending-colors) similar to that of Lab/LCh. Notice the hue of the palette below shifts towards purple at the end.
 
 <hct-blue-palette />
 

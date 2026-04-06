@@ -14,16 +14,17 @@ const labelStyle: React.CSSProperties = {
 
 const hueColWidth = 24;
 const hueGap = 20;
+const swatchMinWidth = (21 * 44) / 51; // match tinted/vibrant total: 21 × 44 = 924
 
 export function NeutralPalette() {
   return (
-    <figure>
+    <figure style={{ minWidth: "max-content" }}>
       {/* L header */}
       <div style={{ display: "flex", gap: hueGap, width: "100%" }}>
         <div style={{ width: hueColWidth, flexShrink: 0 }} />
         <div style={{ display: "flex", flex: 1 }}>
           {tones.map((tone) => (
-            <div key={tone} style={{ flex: 1, ...labelStyle }}>{tone}</div>
+            <div key={tone} style={{ flex: 1, minWidth: swatchMinWidth, ...labelStyle }}>{tone}</div>
           ))}
         </div>
       </div>
@@ -60,6 +61,7 @@ export function NeutralPalette() {
                 chroma={0}
                 oklch={result.oklch}
                 rgb={result.rgb8}
+                minWidth={swatchMinWidth}
                 tooltipBelow
                 boxShadow={tone === 100 ? "inset 0.5px 0 0 0 var(--border), inset 0 0.5px 0 0 var(--border), inset 0 -0.5px 0 0 var(--border)" : undefined}
                 borderRadius={tone === 100 ? "2px 0 0 2px" : undefined}

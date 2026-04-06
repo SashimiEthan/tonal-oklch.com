@@ -87,11 +87,11 @@ export function TopNav() {
         </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <Link href="/" className="absolute left-1/2 -translate-x-1/2 font-semibold text-sm hover:opacity-70 transition-opacity">
+      <Link href="/" className="absolute left-1/2 -translate-x-1/2 font-semibold text-sm hover:opacity-70 transition-opacity max-[744px]:hidden">
         Tonal-OKLCh
       </Link>
       <div className="flex items-center gap-2">
-        <code className="text-xs text-muted-foreground font-mono select-all">
+        <code className="text-xs text-muted-foreground font-mono select-all max-[563px]:hidden">
           npm install tonal-oklch
         </code>
         <a

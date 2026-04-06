@@ -78,7 +78,7 @@ function computeChromator(l: number, chroma: number): StripData[] {
 
 function Strip({ data }: { data: StripData[] }) {
   return (
-    <div style={{ display: "flex", width: "100%" }}>
+    <div style={{ display: "flex", width: "100%", minWidth: 13 * 44 }}>
       {data.map(({ hue, hex, contrast }) => (
         <div
           key={hue}
@@ -127,7 +127,7 @@ export function AlternativeHueRamps() {
 
   return (
     <figure>
-      <div style={{ display: "flex", flexDirection: "column", gap: 0, borderRadius: 2, overflow: "hidden" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 0, borderRadius: 2, overflowX: "auto" }}>
         <Strip data={oklrchData} />
         <Strip data={facelessData} />
         <Strip data={chromatorData} />

@@ -7,6 +7,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* iOS-style thin overlay scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.35) transparent;
+}
+
 :root {
     --space-page-margin: var(--space-section);
     --space-section: 80px;
@@ -114,7 +120,7 @@ article {
     display: grid;
     grid-template-columns:
         minmax(var(--space-page-margin), 1fr)
-        min(var(--content-max-width, 40rem), 100%)
+        min(var(--content-max-width, 40rem), calc(100vw - 2 * var(--space-page-margin)))
         minmax(var(--space-page-margin), 1fr);
     margin-block: var(--space-section);
 }
@@ -327,6 +333,13 @@ article h2 {
     top: calc(100% + 8px);
 }
 
+/* Right-align tooltip on last swatch to prevent overflow */
+.swatch:last-child > .swatch-tooltip {
+    left: auto;
+    right: 0;
+    transform: none;
+}
+
 /* Copied toast */
 .swatch[data-copied]::before {
     content: "Copied";
@@ -345,6 +358,11 @@ article h2 {
     pointer-events: none;
     z-index: 51;
     white-space: nowrap;
+}
+.swatch:last-child[data-copied]::before {
+    left: auto;
+    right: 0;
+    transform: none;
 }
 .swatch[data-selected] {
     outline: 2px solid white;
@@ -380,6 +398,45 @@ figcaption {
     font-size: 14px;
     text-align: center;
     color: var(--foreground-secondary);
+}
+
+@media (max-width: 639px) {
+  .vibrant-settings {
+    flex-basis: 100%;
+    margin-left: 0 !important;
+  }
+}
+
+@media (max-width: 562px) {
+  :root {
+    --space-page-margin: 20px;
+  }
+
+  .home {
+    padding: 20px;
+    padding-top: 40px;
+  }
+}
+
+@media (max-width: 1048px) {
+  .home .figure-download-wrapper {
+    overflow-x: auto;
+    overflow-y: clip;
+  }
+
+  .swatch .swatch-tooltip {
+    display: none;
+  }
+}
+
+.about-page {
+  --space-page-margin: 40px;
+}
+
+@media (max-width: 562px) {
+  .about-page {
+    --space-page-margin: 20px;
+  }
 }
 
 @theme inline {

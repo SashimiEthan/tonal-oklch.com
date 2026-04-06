@@ -16,8 +16,8 @@ export function TonalOklchHueRamp() {
 
   return (
     <figure>
-      <div style={{ borderRadius: 2, overflow: "hidden" }}>
-        <div style={{ display: "flex", width: "100%" }}>
+      <div style={{ borderRadius: 2, overflowX: "auto" }}>
+        <div style={{ display: "flex", width: "100%", minWidth: 13 * 44 }}>
           {data.map(({ hue, hex, contrast }) => (
             <div
               key={hue}

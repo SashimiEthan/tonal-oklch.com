@@ -70,32 +70,37 @@ export function VibrantPalette() {
     <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-content)" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
         <h1 style={{ margin: 0 }}>Vibrant</h1>
-        <span style={{ marginLeft: "auto", fontSize: 14, color: "var(--foreground-primary)" }}>
-          Set each stop's chroma using hue
-        </span>
-        <Select value={refHue} onValueChange={(val) => setRefHue(val ?? "240")}>
-          <SelectTrigger size="sm" style={{ width: 80, height: 36 }}>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {hues.slice(0, -1).map((h) => (
-              <SelectItem key={h} value={String(h)}>
-                {h}°
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <span style={{ fontSize: 14, color: "var(--foreground-primary)" }}>
-          's max chroma
-        </span>
+        <div className="vibrant-settings" style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: "auto", flexWrap: "wrap" }}>
+          <span style={{ fontSize: 14, color: "var(--foreground-primary)" }}>
+            Set each stop's chroma using hue
+          </span>
+          <Select value={refHue} onValueChange={(val) => setRefHue(val ?? "240")}>
+            <SelectTrigger size="sm" style={{ width: 80, height: 36 }}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {hues.slice(0, -1).map((h) => (
+                <SelectItem key={h} value={String(h)}>
+                  {h}°
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <span style={{ fontSize: 14, color: "var(--foreground-primary)" }}>
+            's
+          </span>
+          <span style={{ fontSize: 14, color: "var(--foreground-primary)" }}>
+            max chroma
+          </span>
+        </div>
       </div>
-      <figure>
+      <figure style={{ minWidth: "max-content" }}>
       {/* L header row */}
       <div style={{ display: "flex", gap: hueGap, width: "100%" }}>
         <div style={{ width: hueColWidth, flexShrink: 0, ...labelStyle, textAlign: "right" }}>L</div>
         <div style={{ display: "flex", flex: 1 }}>
           {tones.map((tone) => (
-            <div key={tone} style={{ flex: 1, textAlign: "center", ...labelStyle }}>{tone}</div>
+            <div key={tone} style={{ flex: 1, minWidth: 44, textAlign: "center", ...labelStyle }}>{tone}</div>
           ))}
         </div>
       </div>
@@ -106,7 +111,7 @@ export function VibrantPalette() {
           {tones.map((tone) => {
             const c = chromaByTone[tone];
             return (
-              <div key={tone} style={{ flex: 1, textAlign: "center", ...labelStyle }}>
+              <div key={tone} style={{ flex: 1, minWidth: 44, textAlign: "center", ...labelStyle }}>
                 {c.toFixed(4)}
               </div>
             );
@@ -120,7 +125,7 @@ export function VibrantPalette() {
           {tones.map((tone) => {
             const { delta } = contrastSpread[tone];
             return (
-              <div key={tone} style={{ flex: 1, textAlign: "center", ...labelStyle }}>
+              <div key={tone} style={{ flex: 1, minWidth: 44, textAlign: "center", ...labelStyle }}>
                 {(Math.round(delta * 100) / 100).toFixed(2)}
               </div>
             );
@@ -173,6 +178,7 @@ export function VibrantPalette() {
                   chroma={chroma}
                   oklch={result.oklch}
                   rgb={rgb8}
+                  minWidth={44}
                   boxShadow={tone === 100 ? [
                     "inset 0.5px 0 0 0 var(--border)",
                     ...(hueIdx === 0 ? ["inset 0 0.5px 0 0 var(--border)"] : []),

@@ -17,13 +17,12 @@ const hueGap = 20;
 
 export function TintedNeutralPalette() {
   return (
-    <figure>
-      {/* L header row */}
+    <figure style={{ minWidth: "max-content" }}>
       <div style={{ display: "flex", gap: hueGap, width: "100%" }}>
         <div style={{ width: hueColWidth, flexShrink: 0 }} />
         <div style={{ display: "flex", flex: 1 }}>
           {tones.map((tone) => (
-            <div key={tone} style={{ flex: 1, textAlign: "center", ...labelStyle }}>{tone}</div>
+            <div key={tone} style={{ flex: 1, minWidth: 44, textAlign: "center", ...labelStyle }}>{tone}</div>
           ))}
         </div>
       </div>
@@ -67,6 +66,7 @@ export function TintedNeutralPalette() {
                     chroma={0.01}
                     oklch={result.oklch}
                     rgb={result.rgb8}
+                    minWidth={44}
                     boxShadow={tone === 100 ? [
                       "inset 0.5px 0 0 0 var(--border)",
                       ...(hueIdx === 0 ? ["inset 0 0.5px 0 0 var(--border)"] : []),
