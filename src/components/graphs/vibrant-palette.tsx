@@ -1,21 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { tonalOklchToResult, wcagLuminance, wcagContrast } from "tonal-oklch";
 import { Swatch } from "@/components/swatch";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 const tones = Array.from({ length: 21 }, (_, i) => {
   const t = 100 - i * 5;
   return t === 50 ? 49.84 : t;
 });
-const hues = Array.from({ length: 13 }, (_, i) => i * 30); // 0 to 360, step 30
+export const hues = Array.from({ length: 13 }, (_, i) => i * 30); // 0 to 360, step 30
 
 const hueLabels: Record<number, string> = {
   0: "Red", 30: "Orange", 60: "Yellow", 90: "Lime",
@@ -32,8 +25,7 @@ const labelStyle: React.CSSProperties = {
 const hueColWidth = 24;
 const hueGap = 20;
 
-export function VibrantPalette() {
-  const [refHue, setRefHue] = useState<string>("240");
+export function VibrantPalette({ refHue }: { refHue: string }) {
 
   const chromaByTone = useMemo(() => {
     const hue = Number(refHue);
@@ -67,33 +59,6 @@ export function VibrantPalette() {
   }, [chromaByTone]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-content)" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-        <h1 style={{ margin: 0 }}>Vibrant</h1>
-        <div className="vibrant-settings" style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: "auto", flexWrap: "wrap" }}>
-          <span style={{ fontSize: 14, color: "var(--foreground-primary)" }}>
-            Set each stop's chroma using hue
-          </span>
-          <Select value={refHue} onValueChange={(val) => setRefHue(val ?? "240")}>
-            <SelectTrigger size="sm" style={{ width: 80, height: 36 }}>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {hues.slice(0, -1).map((h) => (
-                <SelectItem key={h} value={String(h)}>
-                  {h}°
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <span style={{ fontSize: 14, color: "var(--foreground-primary)" }}>
-            's
-          </span>
-          <span style={{ fontSize: 14, color: "var(--foreground-primary)" }}>
-            max chroma
-          </span>
-        </div>
-      </div>
       <figure style={{ minWidth: "max-content" }}>
       {/* L header row */}
       <div style={{ display: "flex", gap: hueGap, width: "100%" }}>
@@ -207,6 +172,5 @@ export function VibrantPalette() {
         ))}
       </div>
     </figure>
-    </div>
   );
 }

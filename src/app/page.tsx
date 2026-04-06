@@ -1,6 +1,6 @@
 import { NeutralPalette } from "@/components/graphs/neutral-palette";
 import { TintedNeutralPalette } from "@/components/graphs/tinted-neutral-palette";
-import { VibrantPalette } from "@/components/graphs/vibrant-palette";
+import { VibrantSection } from "@/components/vibrant-section";
 import { FigureDownload } from "@/components/figure-download";
 import { SwatchTooltipWarmup } from "@/components/swatch-tooltip-warmup";
 
@@ -18,9 +18,7 @@ export default function Home() {
         <TintedNeutralPalette />
       </FigureDownload>
 
-      <FigureDownload captureWholeFigure filename="vibrant-palette.png">
-        <VibrantPalette />
-      </FigureDownload>
+      <VibrantSection />
     </div>
   );
 }
