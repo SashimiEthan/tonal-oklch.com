@@ -27,7 +27,7 @@
     "react-dom": "19.2.4",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
-    "retune": "^0.5.4",
+    "retune": "^0.7.5",
     "shadcn": "^4.1.0",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.2",

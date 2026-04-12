@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import {
@@ -25,38 +24,6 @@ export function TopNav() {
   const query = searchParams.toString();
   const suffix = query ? `?${query}` : "";
 
-  const [visible, setVisible] = useState(true);
-  const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastScrollY = useRef(0);
-
-  useEffect(() => {
-    function handleScroll() {
-      const y = window.scrollY;
-
-      // Always show at top of page
-      if (y < 10) {
-        setVisible(true);
-        return;
-      }
-
-      // Hide while scrolling down
-      if (y > lastScrollY.current) {
-        setVisible(false);
-      }
-      lastScrollY.current = y;
-
-      // Show again after scroll stops
-      if (scrollTimer.current) clearTimeout(scrollTimer.current);
-      scrollTimer.current = setTimeout(() => setVisible(true), 1000);
-    }
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (scrollTimer.current) clearTimeout(scrollTimer.current);
-    };
-  }, []);
-
   return (
     <nav
       className="flex items-center justify-between px-3 py-3"
@@ -66,8 +33,6 @@ export function TopNav() {
         top: 0,
         zIndex: 40,
         background: "var(--background)",
-        transform: visible ? "translateY(0)" : "translateY(-100%)",
-        transition: "transform 0.5s ease",
       }}
     >
       <div className="flex items-center gap-0">

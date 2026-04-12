@@ -58,7 +58,7 @@ export function TonalOklchHueRamp() {
         </div>
       </div>
       <figcaption>
-        Consistent contrast ratios in Tonal-OKLCh hue ramp (Tone=49.84%, C=0.15, H=0–360, increment of 30)
+        Consistent contrast ratios in Tonal-OKLCh hue ramp (Tone=49.84, C=0.15, H=0–360, increment of 30)
       </figcaption>
     </figure>
   );
