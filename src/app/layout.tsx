@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Inter, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import { Retune } from "retune";
 import { TopNav } from "@/components/top-nav";
 import { Footer } from "@/components/footer";
 import "./globals.css";
@@ -58,7 +57,6 @@ export default function RootLayout({
           {children}
           <Footer />
           <Analytics />
-          <Retune />
         </ThemeProvider>
       </body>
     </html>

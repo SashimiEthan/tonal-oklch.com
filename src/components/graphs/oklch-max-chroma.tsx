@@ -104,7 +104,7 @@ function MaxChromaSvg({ lightness, chromaLine }: { lightness: number; chromaLine
   );
 }
 
-export function OklchMaxChroma({ lightness = 0.5878 }: { lightness?: number }) {
+export function OklchMaxChroma({ lightness = 0.5877 }: { lightness?: number }) {
   return (
     <figure>
       <MaxChromaSvg lightness={lightness} />
@@ -130,12 +130,12 @@ export function OklchMaxChromaCompare() {
         <div style={{ display: "flex", gap: 32, position: "relative", minWidth: 13 * 44 }}>
         <div style={{ flex: "1 1 0", minWidth: 0 }}>
           <svg viewBox={`0 0 ${chartW} ${chartH}`} style={{ width: "100%", height: "auto", display: "block" }}>
-            <MaxChromaSvgInner lightness={0.5878} />
+            <MaxChromaSvgInner lightness={0.5877} />
           </svg>
         </div>
         <div style={{ flex: "1 1 0", minWidth: 0 }}>
           <svg viewBox={`0 0 ${chartW} ${chartH}`} style={{ width: "100%", height: "auto", display: "block" }}>
-            <MaxChromaSvgInner lightness={0.53} />
+            <MaxChromaSvgInner lightness={0.5323} />
           </svg>
         </div>
         <div
@@ -151,7 +151,7 @@ export function OklchMaxChromaCompare() {
         />
       </div>
       </div>
-      <figcaption>OKLCh max chroma comparison at two lightness levels (Left: L=58.78%, Right: L=53%, C=0.15)</figcaption>
+      <figcaption>OKLCh max chroma comparison at two lightness levels (Left: L=58.77%, Right: L=53.23%, C=0.15)</figcaption>
     </figure>
   );
 }

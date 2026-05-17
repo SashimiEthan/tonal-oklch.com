@@ -121,9 +121,9 @@ function Strip({ data }: { data: StripData[] }) {
 }
 
 export function AlternativeHueRamps() {
-  const oklrchData = useMemo(() => computeOklrch(0.524, 0.15), []);
-  const facelessData = useMemo(() => computeFacelessuser(0.521, 0.15), []);
-  const chromatorData = useMemo(() => computeChromator(0.5878, 0.15), []);
+  const oklrchData = useMemo(() => computeOklrch(0.5217, 0.15), []);
+  const facelessData = useMemo(() => computeFacelessuser(0.5189, 0.15), []);
+  const chromatorData = useMemo(() => computeChromator(0.5877, 0.15), []);
 
   return (
     <figure>
@@ -133,8 +133,10 @@ export function AlternativeHueRamps() {
         <Strip data={chromatorData} />
       </div>
       <figcaption>
-        Inconsistent contrast ratios in alternative hue ramps
-        <br />(Top: OKLrCh Lr=52.4%. Middle: facelessuser&apos;s constants Lr=52.1%. Bottom: Chromator L=58.78%. C=0.15 (simple gamut clampping), H=0–360, increment of 30)
+        Inconsistent contrast ratios in alternative hue ramps (pure chroma reduction in OKLCh; C=0.15, H=0–360, increment of 30)
+        <br />Top: OKLrCh Lr=52.17%
+        <br />Middle: facelessuser&apos;s constants Lr=51.89%
+        <br />Bottom: Chromator L=58.77%
       </figcaption>
     </figure>
   );
