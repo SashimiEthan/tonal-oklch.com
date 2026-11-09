@@ -61,8 +61,8 @@ Knowing the limitations of OKLCh and HTC, I wanted to see what happens if I comb
 Below are the steps the library takes (written by Claude)
 
 1. CIE L* ("tone") replaces OKLCh's L as the lightness axis. Because CIE L* maps directly to WCAG relative luminance, same tone = same contrast ratio, regardless of hue or chroma.
-2. Given a target tone, hue, and chroma, the library binary-searches OKLCh's L channel to find the exact L that produces the target CIE Y (luminance).
-3. When chroma exceeds the sRGB gamut, a second binary search reduces it — re-solving L for the target Y at every step so luminance never drifts during gamut mapping.
+2. Given a target tone, hue, and chroma, the library solves for the exact OKLCh L that produces the target CIE Y (luminance), since at a fixed hue and chroma, Y is a cubic in L.
+3. When chroma exceeds the sRGB gamut, a binary search reduces it to the highest chroma that fits, re-solving L for the target Y at every step so luminance never drifts during gamut mapping.
 4. After conversion, 8-bit hex rounding can shift luminance slightly per hue. For chromatic colors, a post-quantization nudge tests ±1 per RGB channel (27 combinations) and picks the closest to the target Y, tightening the contrast spread to ~0.02 at Tone=49.84 shown above. Achromatic colors skip the nudge to keep R=G=B exact.
 
 # Alternatives I’ve tested
