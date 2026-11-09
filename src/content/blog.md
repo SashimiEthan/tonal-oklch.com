@@ -77,6 +77,12 @@ As you can see below, these 3 approaches still yield different contrasts. From t
 
 <alternative-hue-ramps />
 
+# Update: a faster solver and a Rust crate
+
+Version 0.2.0 (October 2026) replaces the binary search for OKLCh L with a direct solve, which makes the full conversion about 9× faster.
+
+Tonal-OKLCh is now also available as a [Rust crate](https://crates.io/crates/tonal-oklch). It gives the same colors as the JS package and runs about 15× faster. On one M4 Max core, it converts an in-gamut color to hex in 0.15 µs (6.5M colors/s), and an out-of-gamut color in 0.36 µs (2.8M colors/s).
+
 # Closing thoughts
 
 If color science is an iceberg, I've only scratched the surface. But I’m always eager to learn more. That said, if anything above is inaccurate, please let me know and I’d love to learn from it. If you have any feedback or requests, please also don’t hesitate to reach out through this project’s [GitHub repo](https://github.com/SashimiEthan/tonal-oklch).
