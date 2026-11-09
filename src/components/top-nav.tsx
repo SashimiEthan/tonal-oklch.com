@@ -56,9 +56,14 @@ export function TopNav() {
         Tonal-OKLCh
       </Link>
       <div className="flex items-center gap-2">
-        <code className="text-xs text-muted-foreground font-mono select-all max-[563px]:hidden">
-          npm install tonal-oklch
-        </code>
+        <div className="flex items-center gap-6 mr-2 max-[563px]:hidden">
+          <code className="text-xs text-muted-foreground font-mono select-all">
+            npm install tonal-oklch
+          </code>
+          <code className="text-xs text-muted-foreground font-mono select-all max-[1079px]:hidden">
+            cargo add tonal-oklch
+          </code>
+        </div>
         <a
           href="https://github.com/SashimiEthan/tonal-oklch"
           target="_blank"
